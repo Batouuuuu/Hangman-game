@@ -17,7 +17,8 @@ def print_score(path, player_name):
             if player_name == row[0]:
                 existing_players.append(row[0]) # ajout du nom du joueur à la liste des joueurs existants
                 print(f"Bon retour parmi nous {row[0]} ton score était de {row[1]} points")
-            get_best_player(row, score)
+                get_best_player(row, score)
+            
 
                 
             
@@ -49,5 +50,5 @@ def create_new_player(path, player_name, score):
 
 def start_game():
     player_name = input("User : ").title().strip()
-    print_score("./donnees/data_players.csv", player_name) 
+    print_score("./data_players.csv", player_name) 
 start_game()

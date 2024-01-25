@@ -1,63 +1,57 @@
-##JEU DU PENDU
+# ##JEU DU PENDU
 
+# from donnees import donnees ##importation du module donnees qui contient l'affichage des scores et des joueurs
 import random
-import time
-
-data = {}
-player_name = input("Nom : ").title().strip()
-
-if player_name not in data:
-    data[player_name] = 0
+# import time
 
 
+
+# donnees.start_game()
 
 
 hp = 8
+path1 = "./donnees/mots.txt"
 
-path = "./donnees/mots.txt"
+lettre_pas_dans_le_mot = []
+stop_words = ["#","?","§","!","*","-","+",".","{","^",":","/"] 
 
-word_to_guess = []
-letter_not_in_word = []
-letter_in_word = []
 
-with open(path, "r") as file:
+with open(path1, "r") as file:
     mots = [mot.lower().strip() for mot in file] # convertir tous les mots du fichier pour enlever les retours à la ligne
-    machine_choice = random.choice(mots)
-    # print(machine_choice)
+    choix_mot_machine = list(random.choice(mots)) ##prise d'un mot dans le fichier + conversion en liste 
+    # print(choix_mot_machine)
 
-    for letter in machine_choice:    ##parcours des lettres du mot et ajout dans la liste 
-        word_to_guess.append(letter)
-   
-    print(word_to_guess)
+mot_a_deviner = ['#' for _ in choix_mot_machine] ##création de d'une liste #
 
-for _ in range(len(word_to_guess)):
-    letter_in_word.append("*")
-print(letter_in_word)
+print(mot_a_deviner) 
 
 
+while hp>0:
 
+    demande = input("Quelle lettre : ")
 
-while hp >= 1:
+    if demande.isdigit() or demande in stop_words:  ##gestion des erreurs
+        print("Ce n'est pas une lettre", end=", ")
+        continue 
+
+    elif demande in lettre_pas_dans_le_mot:
+        print("Vous avez déjà écrit cette lettre")
+        continue
+
+    for i, lettre in enumerate(choix_mot_machine):
+        if demande == lettre:
+            mot_a_deviner[i] = demande
+        
+    if demande not in choix_mot_machine:
+        hp-=1
+        lettre_pas_dans_le_mot.append(demande)
+        print(f"Cettre lettre n'est pas dans le mot \n, ces lettres ne sont pas dans le mot {lettre_pas_dans_le_mot}\n il vous reste {hp} vies")
+
+    print(mot_a_deviner)
+
+    if "#" not in mot_a_deviner:
+        print(f"Vous avez gagné !! , le mot était {mot_a_deviner}")
+        break
+
+print("Vous n'avez plus de vies ! Perdu")
     
-    ask = input("lettre: ").lower().strip()
-     
-
-    if ask in word_to_guess:    
-        print("Cette lettre est dans le mot")
-        print(letter_in_word)
-    else:
-        hp -= 1
-        letter_not_in_word.append(ask)
-        print("Il n'y pas cette lettre dans le mot, il vous reste ", hp, "vies") 
-        time.sleep(1)
-        print("Ces lettres ne sont pas dans le mot : ",letter_not_in_word) 
-
-    if hp == 0:
-        print("perdu")
-
-    
-
-
-
-
-
